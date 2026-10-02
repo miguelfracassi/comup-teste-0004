@@ -1,0 +1,7 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Painel - ComUp</title><link rel="icon" href="logo.png"><link rel="apple-touch-icon" href="logo.png"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><main class="wrap"><h2 class="hi" id="hi"></h2><p class="mut" id="sb"></p><div class="stats" id="st"></div>
+<div class="acts"><button class="btn pri" onclick="novo()">Novo item</button><a class="btn" href="itens.html?tipo=planejamento">Ver planejamentos</a><a class="btn" href="itens.html?tipo=postagem">Ver postagens</a></div>
+<h2 class="s">Atrasados</h2><div id="at"></div><h2 class="s">Próximos prazos</h2><div id="pr"></div></main><script src="common.js"></script><script>
+(async()=>{const u=await shell('painel');if(!u)return;$('hi').textContent=`${saud()}, ${u.nome.split(' ')[0]}!`;$('sb').textContent=`${u.cargo} - ${u.paroquia} (${u.diocese})`;load()})();
+async function load(){P=await api('plans');stats(P);
+$('at').innerHTML=P.filter(late).map(card).join('')||'<p class="mut">Nenhum item atrasado. Tudo em dia.</p>';
+$('pr').innerHTML=P.filter(p=>p.status!=='concluido'&&!late(p)&&p.data_hora).slice(0,5).map(card).join('')||'<p class="mut">Nenhum prazo futuro. Use "Novo item" para cadastrar.</p>'}</script></body></html>
